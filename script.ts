@@ -32,6 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener("submit", function(event: Event) {
         event.preventDefault();
 
+        if (!profilePictureData) {
+            alert("Please add a profile picture before generating the resume.");
+            return;
+        }
+
         const name = (document.getElementById("name") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
         const phone = (document.getElementById("phone") as HTMLInputElement).value;
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function generateResume(data: ResumeData): void {
+        const skillsList = data.skills.split('\n').map(skill => `<li>${skill.trim()}</li>`).join('');
         resumeOutput.innerHTML = `
             <h2>Resume</h2>
             ${data.profilePicture ? `<img src="${data.profilePicture}" alt="Profile Picture">` : ''}
@@ -51,8 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3>Experience</h3>
             <p>${data.experience}</p>
             <h3>Skills</h3>
-            <p>${data.skills}</p>
+            <ul>${skillsList}</ul>
         `;
         resumeOutput.style.display = 'block';
     }
 });
+

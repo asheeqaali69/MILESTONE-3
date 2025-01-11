@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     form.addEventListener("submit", function (event) {
         event.preventDefault();
+        if (!profilePictureData) {
+            alert("Please add a profile picture before generating the resume.");
+            return;
+        }
         var name = document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var phone = document.getElementById("phone").value;
@@ -30,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
         generateResume({ name: name, email: email, phone: phone, experience: experience, skills: skills, profilePicture: profilePictureData });
     });
     function generateResume(data) {
-        resumeOutput.innerHTML = "\n            <h2>Resume</h2>\n            ".concat(data.profilePicture ? "<img src=\"".concat(data.profilePicture, "\" alt=\"Profile Picture\">") : '', "\n            <p><strong>Name:</strong> ").concat(data.name, "</p>\n            <p><strong>Email:</strong> ").concat(data.email, "</p>\n            <p><strong>Contact:</strong> ").concat(data.phone, "</p>\n            <h3>Experience</h3>\n            <p>").concat(data.experience, "</p>\n            <h3>Skills</h3>\n            <p>").concat(data.skills, "</p>\n        ");
+        var skillsList = data.skills.split('\n').map(function (skill) { return "<li>".concat(skill.trim(), "</li>"); }).join('');
+        resumeOutput.innerHTML = "\n            <h2>Resume</h2>\n            ".concat(data.profilePicture ? "<img src=\"".concat(data.profilePicture, "\" alt=\"Profile Picture\">") : '', "\n            <p><strong>Name:</strong> ").concat(data.name, "</p>\n            <p><strong>Email:</strong> ").concat(data.email, "</p>\n            <p><strong>Contact:</strong> ").concat(data.phone, "</p>\n            <h3>Experience</h3>\n            <p>").concat(data.experience, "</p>\n            <h3>Skills</h3>\n            <ul>").concat(skillsList, "</ul>\n        ");
         resumeOutput.style.display = 'block';
     }
 });
